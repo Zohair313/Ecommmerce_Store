@@ -1230,7 +1230,7 @@ select:focus-visible,
   margin-bottom: 32px;
 }
 
-.tech-tab-btn {
+.tech-tabs-row .tech-tab-btn {
   background: #F8FAFC;
   border: 1px solid var(--border-light);
   border-radius: 8px;
@@ -1241,26 +1241,36 @@ select:focus-visible,
   display: flex;
   flex-direction: column;
   gap: 4px;
+  color: var(--ink);
 }
 
-.tech-tab-btn:hover {
+.tech-tabs-row .tech-tab-btn:hover {
   border-color: var(--ink);
 }
 
-.tech-tab-btn.active {
+.tech-tabs-row .tech-tab-btn.active {
   background: var(--ink);
   color: var(--white);
   border-color: var(--ink);
 }
 
-.tech-tab-metric {
+.tech-tabs-row .tech-tab-btn .tech-tab-metric {
   font-size: 18px;
   font-weight: 600;
+  color: var(--ink);
 }
 
-.tech-tab-title {
+.tech-tabs-row .tech-tab-btn.active .tech-tab-metric {
+  color: var(--white);
+}
+
+.tech-tabs-row .tech-tab-btn .tech-tab-title {
   font-size: 13px;
-  opacity: 0.8;
+  color: var(--muted);
+}
+
+.tech-tabs-row .tech-tab-btn.active .tech-tab-title {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .tech-detail-card {
@@ -3305,7 +3315,7 @@ select:focus-visible,
   margin-bottom: 32px;
 }
 
-.tech-tab-btn {
+.pdp-tech-nav-tabs .tech-tab-btn {
   padding: 14px 22px;
   border: none;
   background: transparent;
@@ -3318,13 +3328,14 @@ select:focus-visible,
   font-family: inherit;
 }
 
-.tech-tab-btn:hover {
+.pdp-tech-nav-tabs .tech-tab-btn:hover {
   color: var(--ink);
 }
 
-.tech-tab-btn.active {
+.pdp-tech-nav-tabs .tech-tab-btn.active {
   color: var(--ink);
   border-bottom-color: var(--ink);
+  background: transparent;
 }
 
 .pdp-tech-content-card {
