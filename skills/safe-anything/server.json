@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.erkamyaman/safe-anything",
+  "title": "safe-anything",
+  "description": "Scan a repository for vulnerabilities, secrets, misconfiguration, vulnerable dependencies and unsafe AI agent setups.",
+  "repository": {
+    "url": "https://github.com/erkamyaman/safe-anything",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/erkamyaman/safe-anything",
+  "version": "1.0.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "safe-anything",
+      "version": "1.0.2",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "packageArguments": [
+        {
+          "type": "positional",
+          "value": "mcp"
+        }
+      ]
+    }
+  ]
+}

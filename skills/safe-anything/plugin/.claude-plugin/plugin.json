@@ -1,0 +1,17 @@
+{
+  "name": "safe-anything",
+  "version": "1.0.2",
+  "description": "Find the holes before someone else does: scan code, secrets, mobile and cloud config, dependencies and the AI agent setup around them, from Claude Code over MCP.",
+  "author": {
+    "name": "Erkam Yaman",
+    "url": "https://github.com/erkamyaman"
+  },
+  "homepage": "https://github.com/erkamyaman/safe-anything",
+  "repository": "https://github.com/erkamyaman/safe-anything",
+  "license": "MIT",
+  "keywords": ["security", "sast", "secrets", "mcp", "vulnerability"],
+  "documentationUrl": "https://github.com/erkamyaman/safe-anything#readme",
+  "supportUrl": "https://github.com/erkamyaman/safe-anything/issues",
+  "privacyPolicyUrl": "https://github.com/erkamyaman/safe-anything/blob/main/docs/privacy.md",
+  "termsOfServiceUrl": "https://github.com/erkamyaman/safe-anything/blob/main/LICENSE"
+}

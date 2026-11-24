@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- The README demo. Every line of output is copied from a real run (release build, Apple M4,
+     2026-11-22): OWASP Juice Shop, then the agent-setup fixture. Long lines are cut with "…".
+     Render with `sh scripts/gifs.sh terminal`. -->
+<html><head><meta charset="utf-8"><title>frames:0</title><style>
+  body { margin: 0; background: #07110d; }
+  .win { width: 1100px; height: 620px; background: #0d1512; border: 1.5px solid #1f2e28; border-radius: 14px; overflow: hidden; box-sizing: border-box;
+         font: 15px/1.5 "JetBrains Mono", "SF Mono", Menlo, monospace; color: #c3d0c9; }
+  .bar { height: 34px; background: #111c18; border-bottom: 1px solid #1f2e28; display: flex; align-items: center; gap: 8px; padding: 0 14px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .title { margin-left: 12px; font: 13px -apple-system, Helvetica, sans-serif; color: #7f948a; }
+  .screen { height: 584px; padding: 14px 20px; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+  pre { margin: 0; white-space: pre; font: inherit; }
+  .p { color: #2fd48f; } .c { color: #f2f7f4; } .m { color: #6f857b; } .b { color: #f2f7f4; font-weight: 700; }
+  .crit { color: #e879f9; font-weight: 700; } .high { color: #ff6b6b; font-weight: 700; } .med { color: #f5c04a; } .low { color: #67d4e8; }
+  .fix { color: #2fd48f; } .cur { background: #c3d0c9; color: #0d1512; }
+</style></head><body data-size="1100,620">
+<div class="win"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="title" id="title">~/juice-shop</span></div><div class="screen"><pre id="t"></pre></div></div>
+<script>
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+const sev = (s, cls) => `<span class="${cls}">${s.padEnd(8)}</span> `
+const head = (s, cls, loc, rule) => sev(s, cls) + `<span class="b">${esc(loc)}</span>  <span class="m">${rule}</span>`
+const body = t => '         ' + esc(t)
+const snip = t => `         <span class="m">&gt; ${esc(t)}</span>`
+const fix = t => `         <span class="fix">Fix:</span> ${esc(t)}`
+const scenes = [
+  { title: '~/juice-shop', prompt: '~/juice-shop $', cmd: 'safe-anything .', out: [
+    head('HIGH', 'high', 'routes/login.ts:34', 'code.sql-injection'),
+    body('A SQL query is built from variables by string formatting, so input can change the query (SQL injection).'),
+    snip("models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND password = '${secu…"),
+    fix("Use parameterized queries (placeholders like ?, $1 or %s passed separately) or the ORM's query builder."),
+    '',
+    head('HIGH', 'high', 'routes/userProfile.ts:65', 'code.eval'),
+    body('Code is evaluated from a string at run time; if any part comes from input, an attacker can run code.'),
+    snip('username = eval(code) // eslint-disable-line no-eval'),
+    fix('Remove eval. Parse data with JSON.parse / json.loads, or map allowed inputs to functions.'),
+    '',
+    head('HIGH', 'high', 'data/static/users.yml:3', 'secret.hardcoded-password'),
+    body('A password or secret is written in the code.'),
+    snip("password: 'admi****'"),
+    '',
+    head('MEDIUM', 'med', 'frontend/src/app/login/login.component.ts:150', 'mobile.insecure-storage'),
+    body('A token or password is saved in plain storage that other code, backups or XSS can read.'),
+    snip("localStorage.setItem('token', authentication.token)"),
+    '',
+    '<span class="b">67 findings:</span> 29 high, 35 medium, 3 low',
+    '<span class="m">Scanned 1,195 files in 0.03 s. Dependencies: skipped (offline).</span>',
+  ]},
+  { title: '~/my-agent-setup', prompt: '~/my-agent-setup $', cmd: 'safe-anything .', out: [
+    head('CRITICAL', 'crit', '.mcp.json:7', 'secret.github-token'),
+    head('HIGH', 'high', '.claude/settings.json:3', 'agent.bypass-permissions'),
+    head('HIGH', 'high', '.claude/settings.json:5', 'agent.unrestricted-shell'),
+    head('HIGH', 'high', '.claude/settings.json:11', 'agent.remote-script'),
+    head('HIGH', 'high', '.claude/skills/helper/SKILL.md:7', 'agent.sensitive-file-access'),
+    head('HIGH', 'high', '.claude/skills/helper/SKILL.md:9', 'agent.hidden-unicode'),
+    head('HIGH', 'high', '.codex/config.toml:2', 'agent.bypass-permissions'),
+    head('HIGH', 'high', '.cursor/mcp.json:2', 'agent.remote-script'),
+    head('HIGH', 'high', '.mcp.json:7', 'agent.mcp-plaintext-secret'),
+    head('HIGH', 'high', '.mcp.json:18', 'agent.mcp-insecure-url'),
+    head('MEDIUM', 'med', '.claude/skills/helper/SKILL.md:5', 'agent.prompt-injection'),
+    head('MEDIUM', 'med', '.mcp.json:5', 'agent.mcp-unpinned'),
+    '<span class="m">… (findings shortened to their first line here)</span>',
+    '',
+    '<span class="b">17 findings:</span> 1 critical, 11 high, 5 medium',
+    '<span class="m">Scanned 6 files in 0.01 s. Dependencies: skipped (offline).</span>',
+  ]},
+]
+const frames = []
+for (const s of scenes) {
+  const before = []
+  for (let k = 0; k <= s.cmd.length; k += 1) frames.push({ s, lines: [], typed: s.cmd.slice(0, k), cursor: true })
+  for (let k = 0; k < 4; k++) frames.push({ s, lines: [], typed: s.cmd, cursor: true })
+  for (let k = 1; k <= s.out.length; k++) frames.push({ s, lines: s.out.slice(0, k), typed: s.cmd })
+  for (let k = 0; k < 42; k++) frames.push({ s, lines: s.out, typed: s.cmd, done: true })
+}
+function render(i) {
+  const f = frames[Math.min(i, frames.length - 1)]
+  document.getElementById('title').textContent = f.s.title + ' (safe-anything)'
+  const prompt = `<span class="p">${f.s.prompt}</span> <span class="c">${esc(f.typed)}</span>`
+  const lines = [prompt + (f.cursor ? '<span class="cur"> </span>' : ''), ...f.lines]
+  if (f.done) lines.push(`<span class="p">${f.s.prompt}</span> <span class="cur"> </span>`)
+  document.getElementById('t').innerHTML = lines.join('\n')
+}
+document.title = 'frames:' + frames.length
+render(Number(location.hash.slice(1)) || 0)
+</script>
+</body></html>

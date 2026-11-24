@@ -1,0 +1,14 @@
+{
+  "name": "safe-anything",
+  "owner": {
+    "name": "Erkam Yaman"
+  },
+  "description": "safe-anything: find the holes before someone else does.",
+  "plugins": [
+    {
+      "name": "safe-anything",
+      "source": "./plugin",
+      "description": "Scan code, secrets, mobile and cloud config, dependencies and AI agent setups from Claude Code. Needs the safe-anything CLI on PATH (cargo install safe-anything)."
+    }
+  ]
+}

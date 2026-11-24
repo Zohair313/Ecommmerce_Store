@@ -1,0 +1,47 @@
+name: False positive or missed finding
+description: safe-anything flagged safe code, or missed a real problem
+labels: [false-positive]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks. Every report like this becomes a test fixture.
+
+        **Don't paste real secrets, tokens or private code.** Replace keys with made-up values of the
+        same shape and cut the code down to the few lines that matter.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong
+      options:
+        - It flagged something that is safe (false positive)
+        - It missed something that is unsafe (missed finding)
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule id
+      description: The rule that fired, or the one you expected to fire (for example `code.sql-injection`). `safe-anything --list-rules` lists them.
+  - type: textarea
+    id: snippet
+    attributes:
+      label: Smallest code that shows it
+      description: A few lines, with the file name, since some rules depend on it (`.mcp.json`, `Dockerfile`, `.env.example`).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it's wrong
+      description: Why this code is safe, or how an attacker could use the missed problem.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: safe-anything version
+      description: Output of `safe-anything --version`.
+    validations:
+      required: true

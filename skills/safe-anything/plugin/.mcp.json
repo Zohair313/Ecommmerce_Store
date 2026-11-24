@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "safe-anything": {
+      "command": "safe-anything",
+      "args": ["mcp"]
+    }
+  }
+}

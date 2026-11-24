@@ -1,0 +1,4 @@
+# Test fixtures hold fake vulnerabilities and fake keys on purpose.
+tests/fixtures/
+# The README GIF page quotes real findings from other repositories.
+docs/assets/gif/

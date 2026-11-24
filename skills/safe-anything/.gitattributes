@@ -1,0 +1,4 @@
+tests/fixtures/** linguist-vendored
+scripts/** linguist-vendored
+npm/** linguist-vendored
+docs/** linguist-documentation

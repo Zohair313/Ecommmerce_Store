@@ -1,0 +1,16 @@
+amends "package://github.com/jdx/hk/releases/download/v2.13.0/hk@2.13.0#/Config.pkl"
+
+steps {
+  ["secrets"] = new Step {
+    check = "sh scripts/check-secrets.sh"
+  }
+  ["cargo-fmt"] = new Step {
+    glob = List("src/**/*.rs", "tests/**/*.rs", "build.rs")
+    check = "cargo fmt --check"
+    fix = "cargo fmt"
+  }
+  ["cargo-clippy"] = new Step {
+    glob = List("src/**/*.rs", "tests/**/*.rs", "build.rs", "Cargo.toml")
+    check = "cargo clippy --all-targets --quiet -- -D warnings"
+  }
+}

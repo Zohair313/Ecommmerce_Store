@@ -1,0 +1,48 @@
+name: Bug report
+description: A crash, a wrong exit code, broken output, or an install that fails
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A wrong or missing finding has its own template. A security problem in safe-anything itself goes
+        through the private report in SECURITY.md. **Don't paste secrets or private code.**
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, what you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: The full error, or the relevant part of the output.
+      render: text
+  - type: dropdown
+    id: install
+    attributes:
+      label: How you run it
+      options:
+        - npx / npm
+        - cargo install
+        - Release binary
+        - GitHub Action
+        - MCP server or Claude Code plugin
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: safe-anything version
+      description: Output of `safe-anything --version`.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: macOS 26 arm64
+    validations:
+      required: true

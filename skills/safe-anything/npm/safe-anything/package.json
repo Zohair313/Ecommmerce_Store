@@ -1,0 +1,20 @@
+{
+  "name": "safe-anything",
+  "version": "0.0.0",
+  "description": "Find the holes before someone else does. One fast command scans code, secrets, mobile and cloud config, dependencies and AI agent setups. 100% Rust.",
+  "keywords": ["security", "scanner", "sast", "secrets", "vulnerability", "mcp", "claude-code", "codex", "osv"],
+  "license": "MIT",
+  "mcpName": "io.github.erkamyaman/safe-anything",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erkamyaman/safe-anything.git"
+  },
+  "homepage": "https://github.com/erkamyaman/safe-anything",
+  "bin": {
+    "safe-anything": "bin/safe-anything.js"
+  },
+  "files": ["bin", "binaries"],
+  "engines": {
+    "node": ">=18"
+  }
+}

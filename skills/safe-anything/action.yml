@@ -1,0 +1,69 @@
+name: safe-anything
+description: Find the holes before someone else does. Scan code, secrets, config, dependencies and AI agent setups, and upload the results to GitHub code scanning.
+branding:
+  icon: shield
+  color: green
+inputs:
+  path:
+    description: Folder to scan
+    default: "."
+  version:
+    description: safe-anything version (a release tag such as v1.0.2, or latest)
+    default: latest
+  severity:
+    description: Lowest severity to report (low, medium, high, critical)
+    default: low
+  fail-on:
+    description: Fail the job when a finding is at least this severe (low, medium, high, critical, never)
+    default: high
+  offline:
+    description: Skip the OSV.dev dependency lookup
+    default: "false"
+  sarif:
+    description: Path of the SARIF file to write, for github/codeql-action/upload-sarif
+    default: safe-anything.sarif
+outputs:
+  sarif:
+    description: Path of the SARIF file
+    value: ${{ inputs.sarif }}
+runs:
+  using: composite
+  steps:
+    - name: Install safe-anything
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: ${{ inputs.version }}
+      run: |
+        case "${RUNNER_OS}-${RUNNER_ARCH}" in
+          Linux-X64) target=x86_64-unknown-linux-gnu ;;
+          Linux-ARM64) target=aarch64-unknown-linux-gnu ;;
+          macOS-ARM64) target=aarch64-apple-darwin ;;
+          macOS-X64) target=x86_64-apple-darwin ;;
+          Windows-X64) target=x86_64-pc-windows-msvc ;;
+          *) echo "no prebuilt safe-anything for ${RUNNER_OS}-${RUNNER_ARCH}"; exit 1 ;;
+        esac
+        if [ "$VERSION" = latest ]; then
+          VERSION=$(gh release view --repo erkamyaman/safe-anything --json tagName --jq .tagName)
+        fi
+        dir="$RUNNER_TEMP/safe-anything"
+        mkdir -p "$dir"
+        gh release download "$VERSION" --repo erkamyaman/safe-anything --pattern "*-${target}.*" --dir "$dir"
+        cd "$dir"
+        for f in *.tar.gz; do [ -e "$f" ] && tar xzf "$f"; done
+        for f in *.zip; do [ -e "$f" ] && 7z x -y "$f" > /dev/null; done
+        bin=$(find "$dir" -type f \( -name safe-anything -o -name safe-anything.exe \) | head -1)
+        dirname "$bin" >> "$GITHUB_PATH"
+    - name: Scan
+      shell: bash
+      env:
+        SCAN_PATH: ${{ inputs.path }}
+        SEVERITY: ${{ inputs.severity }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        OFFLINE: ${{ inputs.offline }}
+        SARIF: ${{ inputs.sarif }}
+      run: |
+        args=("$SCAN_PATH" --severity "$SEVERITY")
+        [ "$OFFLINE" = true ] && args+=(--offline)
+        safe-anything "${args[@]}" --sarif --fail-on never > "$SARIF"
+        safe-anything "${args[@]}" --fail-on "$FAIL_ON"
