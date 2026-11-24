@@ -113,11 +113,11 @@ export default function ProductGrid({
                       onClick={() => onTryOn(prod.id)}
                       title="Activate this jacket on the virtual try-on model"
                     >
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8">
                         <circle cx="12" cy="7" r="4" />
                         <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2" />
                       </svg>
-                      <span>Try On Model</span>
+                      <span>Try On</span>
                     </button>
 
                     <button
@@ -131,7 +131,7 @@ export default function ProductGrid({
                     <button
                       className="btn-quick-add"
                       onClick={() => onAddToCart(prod)}
-                      aria-label={`Add ${prod.title} to cart`}
+                      aria-label={`Add ${prod.title} to bag`}
                     >
                       <span>Add to Bag</span>
                     </button>
